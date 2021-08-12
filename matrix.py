@@ -80,6 +80,15 @@ class matrix:
         self.data[r][c] = soruce.data[r-first_row][c-first_col]
     return self
 
+# append to the self matrix the source matrix, return the new matrix
+  def appendBelow(self,source):
+    if (self.col != source.col):
+      raise Exception("Matrix Exception: dimention error")
+    self.data += source.data
+    self.row += source.row
+    return self
+
+
 
   
 
