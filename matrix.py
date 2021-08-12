@@ -1,5 +1,42 @@
 from copy import deepcopy
 
+#auxeliri function, parsing the indexes
+  # row and col are tuple indecatig the range, or int if meens a single row or
+  # col. empty tuple means the entire range
+def getIndex(matrix,row,col):
+    if (type(row) == int):
+      first_row = row
+      last_row = row
+    elif (type(row) == tuple):
+      if(len(row) == 0):
+       first_row = 0
+       last_row = matrix.row - 1
+      if(len(row) == 1):
+       first_row = row[0]
+       last_row = matrix.row - 1
+      if(len(row) == 2):
+       first_row = row[0]
+       last_row = row[1]
+    else:
+      raise Exception("Matrix Exception: dimention error")
+   
+    if (type(col) == int):
+      first_col = col
+      last_col = col
+    elif (type(col) == tuple):
+      if(len(col) == 0):
+       first_col = 0
+       last_col = matrix.col - 1
+      if(len(col) == 1):
+       first_col = col[0]
+       last_col = matrix.col - 1
+      if(len(col) == 2):
+       first_col = col[0]
+       last_col = col[1]
+    else:
+     raise Exception("Matrix Exception: dimention error")
+    return (first_row,last_row,first_col,last_col)
+
 
 class matrix:
   def __init__(self,source):
@@ -25,38 +62,7 @@ class matrix:
   # row and col are tuple indecatig the range, or int if meens a single row or
   # col. empty tuple means the entire range
   def __call__(self, row,col): 
-    if (type(row) == int):
-      first_row = row
-      last_row = row
-    elif (type(row) == tuple):
-      if(len(row) == 0):
-       first_row = 0
-       last_row = self.row - 1
-      if(len(row) == 1):
-       first_row = row[0]
-       last_row = self.row - 1
-      if(len(row) == 2):
-       first_row = row[0]
-       last_row = row[1]
-    else:
-      raise Exception("Matrix Exception: dimention error")
-   
-    if (type(col) == int):
-      first_col = col
-      last_col = col
-    elif (type(col) == tuple):
-      if(len(col) == 0):
-       first_col = 0
-       last_col = self.col - 1
-      if(len(col) == 1):
-       first_col = col[0]
-       last_col = self.col - 1
-      if(len(col) == 2):
-       first_col = col[0]
-       last_col = col[1]
-    else:
-     raise Exception("Matrix Exception: dimention error")
-
+    (first_row,last_row,first_col,last_col) = getIndex(self,row,col)
     new_mat = []
     for r in range(first_row,last_row+1):
       new_row = []
@@ -64,7 +70,16 @@ class matrix:
         new_row.append(self.data[r][c])
       new_mat.append(new_row)
     return(matrix(new_mat))
-    
+  
+  def edit(self,soruce,row,col):
+    (first_row,last_row,first_col,last_col) = getIndex(self,row,col)
+    if (soruce.row != (last_row - first_row + 1)) or (soruce.col != (last_col - first_col + 1)):
+      raise Exception("Matrix Exception: dimention error")
+    for r in range(first_row,last_row+1):
+      for c in range(first_col,last_col+1):
+        self.data[r][c] = soruce.data[r-first_row][c-first_col]
+    return self
+
 
   
 
@@ -95,3 +110,4 @@ def eye(size):
   for i in range(size):
     mat.data[i][i] = 1
   return mat
+
