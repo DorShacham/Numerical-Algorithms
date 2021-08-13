@@ -84,13 +84,28 @@ class matrix:
   def appendBelow(self,source):
     if (self.col != source.col):
       raise Exception("Matrix Exception: dimention error")
-    self.data += source.data
+    self.data += deepcopy(source.data)
     self.row += source.row
     return self
 
+  def appendRight(self, source):
+    if (self.row != source.row):
+      raise Exception("Matrix Exception: dimention error")
+    for r in range(self.row):
+      self.data[r] += deepcopy(source.data[r])
+    self.col += source.col
+    return self
 
+# returned the transposed matrix 
+  def transpose(self):
+    new_mat = []
+    for c in range(self.col):
+      new_row = []
+      for r in range(self.row):
+        new_row.append(self.data[r][c])
+      new_mat.append(new_row)
+    return (matrix(new_mat))
 
-  
 
 
          
