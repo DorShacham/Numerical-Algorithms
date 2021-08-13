@@ -72,6 +72,8 @@ class matrix:
     return(matrix(new_mat))
   
   def edit(self,soruce,row,col):
+    if type(soruce) != type(self): # i.e not a matrix
+      soruce = matrix([[soruce]])
     (first_row,last_row,first_col,last_col) = getIndex(self,row,col)
     if (soruce.row != (last_row - first_row + 1)) or (soruce.col != (last_col - first_col + 1)):
       raise Exception("Matrix Exception: dimention error")
@@ -106,6 +108,60 @@ class matrix:
       new_mat.append(new_row)
     return (matrix(new_mat))
 
+  ## add for each
+  def __add__(self,other):
+    if (self.size() != other.size()):
+      raise Exception("Matrix Exception: dimention error")
+    new_mat = []
+    for r in range(self.row):
+      new_row = []
+      for c in range(self.col):
+        new_row.append(self.data[r][c]+other.data[r][c])
+      new_mat.append(new_row)
+    return (matrix(new_mat))
+
+  def __sub__(self,other):
+    return(self + (-1)*other)
+
+  ## mult for each
+  def __pow__(self,other):
+    if (self.size() != other.size()):
+      raise Exception("Matrix Exception: dimention error")
+    new_mat = []
+    for r in range(self.row):
+      new_row = []
+      for c in range(self.col):
+        new_row.append(self.data[r][c]*other.data[r][c])
+      new_mat.append(new_row)
+    return (matrix(new_mat))
+  
+  def __mul__(self,other):
+    if type(other) != type(self): # i.e not a matrix
+      return(self**uniform(other,self.row,self.col))
+    
+    else:
+      if(self.col != other.row):
+        raise Exception("Matrix Exception: dimention error")
+      new_mat = uniform(0,self.row,other.col)
+      for r in range(new_mat.row):
+        for c in range(new_mat.col):
+          sum = 0
+          for k in range(self.col):
+            sum += self.data[r][k]*other.data[k][c]
+          new_mat.edit(sum,r,c)
+      return new_mat
+
+  def __rmul__(self,other):
+    if type(other) != type(self): # i.e not a matrix
+      return(self**uniform(other,self.row,self.col))
+  
+  # return the Formbinus norm of the matrix
+  def norm(self):
+    sum = 0
+    for r in range(self.row):
+      for c in range(self.col):
+        sum += self.data[r][c]**2
+    return sum**(1/2)
 
 
          
