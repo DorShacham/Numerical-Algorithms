@@ -163,6 +163,28 @@ class matrix:
         sum += self.data[r][c]**2
     return sum**(1/2)
 
+# return a tuple of the max element and a tuple of its position
+  def max(self):
+    m = self.data[0][0]
+    arg = (0,0)
+    for r in range(self.row):
+      for c in range(self.col):
+        if self.data[r][c] > m:
+          m = self.data[r][c]
+          arg = (r,c)
+    return (m,arg)
+
+  def maxAbs(self):
+    m = abs(self.data[0][0])
+    arg = (0,0)
+    for r in range(self.row):
+      for c in range(self.col):
+        if abs(self.data[r][c]) > m:
+          m = abs(self.data[r][c])
+          arg = (r,c)
+    return (m,arg)
+
+
 
          
 
