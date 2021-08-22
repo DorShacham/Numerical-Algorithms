@@ -60,7 +60,7 @@ class matrix:
         if int(obj)==float(obj):
           print("%4.1d" %obj, end=" ")
         else:
-          print("%4.1f" %obj, end=" ")
+          print("%4.2f" %obj, end=" ")
       print()
   
   # row and col are tuple indecatig the range, or int if meens a single row or
@@ -88,14 +88,14 @@ class matrix:
 
 # append to the self matrix the source matrix, return the new matrix
   def appendBelow(self,source):
-    if (self.col != source.col):
+    if (self.col != source.col) and (self.col != 0):
       raise Exception("Matrix Exception: dimention error")
     self.data += deepcopy(source.data)
     self.row += source.row
     return self
 
   def appendRight(self, source):
-    if (self.row != source.row):
+    if (self.row != source.row) and (self.col != 0):
       raise Exception("Matrix Exception: dimention error")
     for r in range(self.row):
       self.data[r] += deepcopy(source.data[r])
@@ -208,6 +208,10 @@ class matrix:
           P.edit(tmp_line,i,(0,))
           det *= (-1)
     return det
+
+  def invers(self):
+    from lu import invers
+    return invers(self)
 
          
 

@@ -31,3 +31,40 @@ def lu(mat, perm=True):
         return (L,U,P)
     else:
         return(L,U)
+
+def solve(matrix, vector):
+    if (vector.hight() != matrix.hight()) or (vector.width() != 1):
+        raise Exception("Matrix Exception: dimention error")
+    (L,U,P) = lu(matrix)
+    b = P*vector
+    # forword switch
+    z = uniform(0,L.width(),1)
+    for i in range(L.hight()):
+        for j in range(i):
+            b.data[i][0] -= z.data[j][0]*L.data[i][j]
+        z.data[i][0] = b.data[i][0]
+
+    # backword switch
+    y = uniform(0,U.width(),1)
+    for i in range(U.hight()-1,0-1,-1):
+        for j in range(U.width() -1,i-1,-1):
+            z.data[i][0] -= y.data[j][0]*U.data[i][j]
+        if U.data[i][i] == 0:
+            raise Exception("Matrix Exception: Matrix is singuler")
+        else:
+            y.data[i][0] = z.data[i][0] / U.data[i][i]
+
+    return y
+
+def invers(mat):
+    if mat.hight() != mat.width():
+        raise Exception("Matrix Exception: Matrix is not squre")
+    n = mat.hight()
+    I = eye(n)
+    set = []
+    for i in range(n):
+        set.append([])
+    invers = matrix(set)
+    for i in range(n):
+        invers.appendRight(solve(mat,I((0,),i)))
+    return invers
