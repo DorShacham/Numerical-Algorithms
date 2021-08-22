@@ -196,7 +196,17 @@ class matrix:
     det = 1
     for i in range(self.row):
       det *= U.data[i][i]
-    det *= ((-1)**((((P-eye(self.row)).norm()**2)/2-1))).real
+
+      for i in range(self.row):
+        if P.data[i][i] == 1:
+          continue
+        else:
+          pivot = P((i,),i).maxAbs()
+          pivot = pivot[1][0] + i #takes the row from the arg
+          tmp_line = P(pivot,(0,))
+          P.edit(P(i,(0,)),pivot,(0,))
+          P.edit(tmp_line,i,(0,))
+          det *= (-1)
     return det
 
          
