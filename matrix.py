@@ -1,5 +1,6 @@
 from copy import deepcopy
 
+
 #auxeliri function, parsing the indexes
   # row and col are tuple indecatig the range, or int if meens a single row or
   # col. empty tuple means the entire range
@@ -187,7 +188,16 @@ class matrix:
           arg = (r,c)
     return (m,arg)
 
-
+  def det(self):
+    if self.row != self.col:
+      raise Exception("Matrix Exception: Determinent only defiend for sqrue matresices")
+    from lu import lu
+    (L,U,P) = lu(self)
+    det = 1
+    for i in range(self.row):
+      det *= U.data[i][i]
+    det *= ((-1)**((((P-eye(self.row)).norm()**2)/2-1))).real
+    return det
 
          
 
