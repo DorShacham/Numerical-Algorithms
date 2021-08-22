@@ -56,7 +56,10 @@ class matrix:
   def print(self):
     for row in self.data:
       for obj in row:
-        print(obj, end=" ")
+        if int(obj)==float(obj):
+          print("%4.1d" %obj, end=" ")
+        else:
+          print("%4.1f" %obj, end=" ")
       print()
   
   # row and col are tuple indecatig the range, or int if meens a single row or
